@@ -9,8 +9,14 @@
             grid-template-columns: max-content max-content;
             grid-gap: .3em 1em;
         }
-        input:invalid {
+        input {
+            outline-color: blueviolet;
+        }
+        input:invalid { /* valid = Pseudo Klasse */
             color: red;
+        }
+        input:valid { /* valid = Pseudo Klasse */
+            color: green;
         }
 
     </style>

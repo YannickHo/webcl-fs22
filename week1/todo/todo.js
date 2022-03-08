@@ -42,7 +42,7 @@ const TodoController = () => {
         );
     };
 
-    return {
+    return { //Exponierte API
         numberOfTodos:      todoModel.count,
         numberOfopenTasks:  () => todoModel.countIf( todo => ! todo.getDone() ),
         addTodo:            addTodo,
@@ -59,7 +59,7 @@ const TodoController = () => {
 
 const TodoItemsView = (todoController, rootElement) => {
 
-    const render = todo => {
+    const render = todo => { //Zeile einfuegen
 
         function createElements() {
             const template = document.createElement('DIV'); // only for parsing
@@ -92,12 +92,12 @@ const TodoItemsView = (todoController, rootElement) => {
 
     // binding
 
-    todoController.onTodoAdd(render);
+    todoController.onTodoAdd(render); //Controller weis nicht was gerendert wird, ruft nur funktion render auf
 
     // we do not expose anything as the view is totally passive.
 };
 
-const TodoTotalView = (todoController, numberOfTasksElement) => {
+const TodoTotalView = (todoController, numberOfTasksElement) => { //
 
     const render = () =>
         numberOfTasksElement.innerText = "" + todoController.numberOfTodos();
