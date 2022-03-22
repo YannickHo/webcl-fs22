@@ -18,7 +18,6 @@ const Observable = value => {
     }
 };
 
-
 const ObservableList = list => {
     const addListeners = [];
     const delListeners = [];

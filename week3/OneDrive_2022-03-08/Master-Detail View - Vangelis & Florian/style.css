@@ -1,0 +1,41 @@
+th{
+  padding-left:  5px;
+  padding-right: 5px;
+}
+
+td{
+  padding-left:  5px;
+  padding-right: 5px;
+}
+
+tr.active {
+  background-color: #ecfdfd;
+}
+
+tr.dirty {
+  background-color: #fdfac3;
+}
+
+tr.active.dirty {
+  background-color: #e8fdc5;
+}
+
+.container {
+  max-width:     max-content;
+  border:        1px solid black;
+  border-radius: 5px;
+  padding:       20px;
+}
+
+#detail-container {
+  max-width:        290px;
+  background-color: #f9fdff;
+  padding:          20px;
+  border-radius:    5px;
+  border:           1px solid #ecf0f2;
+  margin:           20px auto 0 auto;
+}
+
+.modifyed {
+  font-style: italic;
+}

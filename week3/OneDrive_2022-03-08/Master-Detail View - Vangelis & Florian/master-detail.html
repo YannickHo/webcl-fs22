@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Master-Detail</title>
+        <link href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div id="table-container">
+                <button id="add">Person hinzufügen</button>
+                <table id="table-overview" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Vorname</th>
+                        <th>Nachname</th>
+                        <th>Funktion</th>
+                        <th>Verfügbarkeit</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-content">
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="detail-container" style="display: none">
+                <table>
+                    <tr>
+                        <td>Vorname</td>
+                        <td><input id="firstname" type="text" placeholder="Hans"></td>
+                    </tr>
+                    <tr>
+                        <td>Nachname</td>
+                        <td><input id="lastname" type="text" placeholder="Müller"></td>
+                    </tr>
+                    <tr>
+                        <td>Funktion</td>
+                        <td><input id="function" type="text" placeholder="Buchhalter"></td>
+                    </tr>
+                    <tr>
+                        <td>Verfügbarkeit</td>
+                        <td>
+                            <label for="availabilityYes">Ja</label><input id="availabilityYes" type="radio" name="availability">
+                            <label for="availabilityNo">Nein</label><input id="availabilityNo" type="radio" name="availability">
+                        </td>
+                    </tr>
+                </table>
+                <div class="buttonCollection">
+                    <button id="save">Speichern</button>
+                    <button id="reset">Zurücksetzen</button>
+                    <button id="remove">Löschen</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <script src="./script.js"></script>
+    </footer>
+</html>

@@ -1,9 +1,13 @@
+:root {
+    --max-width: 40em;
+}
+
 body {
     margin-top:     2em;
     font-family:    "Helvetica Neue", sans-serif;
 }
 main {
-    max-width:  40em;
+    max-width:  var(--max-width);
     margin:     auto;
     padding:    2em;
     box-shadow: 0 4px  8px 0 rgba(0, 0, 0, 0.2),
@@ -44,4 +48,12 @@ input[type=text]:focus {
 }
 input.invalid {
     color: red;
+}
+
+#pie-chart {
+    width: calc(var(--max-width)/2);
+    height: calc(var(--max-width)/2);
+    margin-top: 20px;
+    margin-left: calc(var(--max-width)/4);
+    border-radius: 50%;
 }

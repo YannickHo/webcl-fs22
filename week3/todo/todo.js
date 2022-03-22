@@ -1,67 +1,67 @@
-import { ObservableList }           from "../observable/observable.js";
-import { Attribute, VALID, VALUE }  from "../presentationModel/presentationModel.js";
-import { todoItemProjector }        from "./todoProjector.js";
-import { Scheduler }                from "../dataflow/dataflow.js";
-import { fortuneService }           from "./fortuneService.js";
+import {ObservableList} from "../observable/observable.js";
+import {Attribute, VALID, VALUE} from "../presentationModel/presentationModel.js";
+import {todoItemProjector} from "./todoProjector.js";
+import {Scheduler} from "../dataflow/dataflow.js";
+import {fortuneService} from "./fortuneService.js";
 
-export { TodoController, TodoItemsView, TodoTotalView, TodoOpenView}
+export {TodoController, TodoItemsView, TodoTotalView, TodoOpenView, TodoPieChartView}
 
 const TodoController = () => {
 
-    const Todo = () => {                               // facade
-        const textAttr = Attribute("text");
-        const doneAttr = Attribute(false);
+	const Todo = () => {                               // facade
+		const textAttr = Attribute("text");
+		const doneAttr = Attribute(false);
 
-        textAttr.setConverter( input => input.toUpperCase() );
-        textAttr.setValidator( input => input.length >= 3   );
+		textAttr.setConverter(input => input.toUpperCase());
+		textAttr.setValidator(input => input.length >= 3);
 
-        // business rules / constraints (the text is only editable if not done)
-        doneAttr.getObs(VALUE).onChange( isDone => textAttr.getObs("EDITABLE",!isDone).setValue(!isDone));
+		// business rules / constraints (the text is only editable if not done)
+		doneAttr.getObs(VALUE).onChange(isDone => textAttr.getObs("EDITABLE", !isDone).setValue(!isDone));
 
-        return {
-            getDone:            doneAttr.getObs(VALUE).getValue,
-            setDone:            doneAttr.getObs(VALUE).setValue,
-            onDoneChanged:      doneAttr.getObs(VALUE).onChange,
-            getText:            textAttr.getObs(VALUE).getValue,
-            setText:            textAttr.setConvertedValue,
-            onTextChanged:      textAttr.getObs(VALUE).onChange,
-            onTextValidChanged: textAttr.getObs(VALID).onChange,
-            onTextEditableChanged: textAttr.getObs("EDITABLE").onChange,
-        }
-    };
+		return {
+			getDone: doneAttr.getObs(VALUE).getValue,
+			setDone: doneAttr.getObs(VALUE).setValue,
+			onDoneChanged: doneAttr.getObs(VALUE).onChange,
+			getText: textAttr.getObs(VALUE).getValue,
+			setText: textAttr.setConvertedValue,
+			onTextChanged: textAttr.getObs(VALUE).onChange,
+			onTextValidChanged: textAttr.getObs(VALID).onChange,
+			onTextEditableChanged: textAttr.getObs("EDITABLE").onChange,
+		}
+	};
 
-    const todoModel = ObservableList([]); // observable array of Todos, this state is private
-    const scheduler = Scheduler();
+	const todoModel = ObservableList([]); // observable array of Todos, this state is private
+	const scheduler = Scheduler();
 
-    const addTodo = () => {
-        const newTodo = Todo();
-        todoModel.add(newTodo);
-        return newTodo;
-    };
+	const addTodo = () => {
+		const newTodo = Todo();
+		todoModel.add(newTodo);
+		return newTodo;
+	};
 
-    const addFortuneTodo = () => {
-        const newTodo = Todo();
-        todoModel.add(newTodo);
-        newTodo.setText('...');
-        scheduler.add( ok =>
-           fortuneService( text => {
-                   newTodo.setText(text);
-                   ok();
-               }
-           )
-        );
-    };
+	const addFortuneTodo = () => {
+		const newTodo = Todo();
+		todoModel.add(newTodo);
+		newTodo.setText('...');
+		scheduler.add(ok =>
+		   fortuneService(text => {
+				  newTodo.setText(text);
+				  ok();
+			  }
+		   )
+		);
+	};
 
-    return {
-        numberOfTodos:      todoModel.count,
-        numberOfopenTasks:  () => todoModel.countIf( todo => ! todo.getDone() ),
-        addTodo:            addTodo,
-        addFortuneTodo:     addFortuneTodo,
-        removeTodo:         todoModel.del,
-        onTodoAdd:          todoModel.onAdd,
-        onTodoRemove:       todoModel.onDel,
-        removeTodoRemoveListener: todoModel.removeDeleteListener, // only for the test case, not used below
-    }
+	return {
+		numberOfTodos: todoModel.count,
+		numberOfopenTasks: () => todoModel.countIf(todo => !todo.getDone()),
+		addTodo: addTodo,
+		addFortuneTodo: addFortuneTodo,
+		removeTodo: todoModel.del,
+		onTodoAdd: todoModel.onAdd,
+		onTodoRemove: todoModel.onDel,
+		removeTodoRemoveListener: todoModel.removeDeleteListener, // only for the test case, not used below
+	}
 };
 
 
@@ -69,37 +69,55 @@ const TodoController = () => {
 
 const TodoItemsView = (todoController, rootElement) => {
 
-    const render = todo =>
-        todoItemProjector(todoController, rootElement, todo);
+	const render = todo =>
+	   todoItemProjector(todoController, rootElement, todo);
 
-    // binding
+	// binding
 
-    todoController.onTodoAdd(render);
+	todoController.onTodoAdd(render);
 
-    // we do not expose anything as the view is totally passive.
+	// we do not expose anything as the view is totally passive.
 };
 
 const TodoTotalView = (todoController, numberOfTasksElement) => {
 
-    const render = () =>
-        numberOfTasksElement.innerText = "" + todoController.numberOfTodos();
+	const render = () =>
+	   numberOfTasksElement.innerText = "" + todoController.numberOfTodos();
 
-    // binding
+	// binding
 
-    todoController.onTodoAdd(render);
-    todoController.onTodoRemove(render);
+	todoController.onTodoAdd(render);
+	todoController.onTodoRemove(render);
 };
 
 const TodoOpenView = (todoController, numberOfOpenTasksElement) => {
 
-    const render = () =>
-        numberOfOpenTasksElement.innerText = "" + todoController.numberOfopenTasks();
+	const render = () =>
+	   numberOfOpenTasksElement.innerText = "" + todoController.numberOfopenTasks();
 
-    // binding
+	// binding
 
-    todoController.onTodoAdd(todo => {
-        render();
-        todo.onDoneChanged(render);
-    });
-    todoController.onTodoRemove(render);
+	todoController.onTodoAdd(todo => {
+		render();
+		todo.onDoneChanged(render);
+	});
+	todoController.onTodoRemove(render);
 };
+
+const TodoPieChartView = (todoController, pieChart) => {
+
+	const calcPercentOfOpenTasks = () => {
+		return (todoController.numberOfopenTasks() / todoController.numberOfTodos() * 100);
+	}
+
+	const render = () => {
+		pieChart.style.background = 'conic-gradient(blue 0% ' + calcPercentOfOpenTasks() + '%, green 0% 100%)';
+	}
+
+	todoController.onTodoAdd(todo => {
+		render();
+		todo.onDoneChanged(render);
+	});
+
+	todoController.onTodoRemove(render);
+}
