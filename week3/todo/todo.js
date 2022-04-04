@@ -55,6 +55,7 @@ const TodoController = () => {
 	return {
 		numberOfTodos: todoModel.count,
 		numberOfopenTasks: () => todoModel.countIf(todo => !todo.getDone()),
+		openTasksRatio: undefined,
 		addTodo: addTodo,
 		addFortuneTodo: addFortuneTodo,
 		removeTodo: todoModel.del,
