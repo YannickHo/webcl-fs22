@@ -6,7 +6,7 @@
     <style>
 
         :root {
-            margin:     0;
+            margin:     0; /*reset utility (standart setzen) */
             padding:    0;
             box-sizing: border-box;
             font-family: "Helvetica Neue", "sans-serif";
@@ -31,9 +31,13 @@
         .cool {
             background: orange;
         }
-        #one {
+        :is(div, span)#one {
             background: red;
         }
+        #one#one { /* Specificity erhoehen mit 2 IDs */
+            background: red;
+        }
+
 
         /* custom style */
 
@@ -50,7 +54,7 @@
         Cool Class</div>
     <div id="one">
         One Id</div>
-    <div>
+    <div style="background: purple !important;">
         Inline style</div>
 </main>
 
